@@ -1,8 +1,11 @@
 import React from "react";
 import { useEffect , useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ViewUser = () => {
+
+  const navigate = useNavigate()
 
   const [data  , setData] = useState([])
 
@@ -52,7 +55,7 @@ const ViewUser = () => {
             <td className="px-6 py-4">{u.email}</td>
             <td>
               <div className="flex gap-6">
-                <button className="p-2 bg-blue-500 text-white">Edit</button>
+                <button className="p-2 bg-blue-500 text-white" onClick={() => navigate(`/edit/${u.id}`)}>Edit</button>
                 <button  className="p-2 bg-blue-500 text-white" onClick={() => deleteUser(u.id)}>Delete</button>
               </div>
             </td>

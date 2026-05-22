@@ -2,7 +2,7 @@ import React from 'react'
 
 const Home = () => {
   return (
-    <div>React JSON Server CRUD</div>
+    <div className='bg-pink-600 text-center text-4xl p-4 text-white'>React JSON Server CRUD</div>
   )
 }
 
