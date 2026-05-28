@@ -1,0 +1,30 @@
+{
+  "users": [
+    {
+      "name": "EcommerceApp",
+      "email": "ifmdac80@gmail.com",
+      "id": "WT2xLEMHiBg"
+    },
+    {
+      "name": "Default App",
+      "email": "ifmdac80@gmail.com",
+      "id": "oTKAE8Ww4SM"
+    },
+    {
+      "name": "Red and White Skill Education",
+      "email": "ifmdac80@gmail.com",
+      "id": "DrgpK6ZNt84"
+    },
+    {
+      "name": "vivek",
+      "email": "ifmdac80@gmail.com",
+      "id": "-t7DXG8S0uQ"
+    },
+    {
+      "name": "dzfSDf",
+      "email": "ifmdac80@gmail.com",
+      "id": "1GdNFX9VH1U"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
