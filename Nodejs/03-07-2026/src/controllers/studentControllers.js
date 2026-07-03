@@ -1,16 +1,10 @@
-import Students from "../models/StudentModel.js";
+import Students from "../models/StudentModel.js";.
 
 // new student create
 
 export const createStudent = async (req, res) => {
   try {
     const student = await Students.create(req.body);
-
-    // If the request expects HTML (form submission), redirect to list page
-    const accept = req.headers.accept || '';
-    if (accept.includes('text/html') || req.is('application/x-www-form-urlencoded')) {
-      return res.redirect('/students');
-    }
 
     res.status(201).json({
       success: true,
@@ -28,15 +22,14 @@ export const createStudent = async (req, res) => {
 
 export const getStudents = async (req, res) => {
   try {
-    // Use query params for GET requests
-    const { search, sort } = req.query;
+    const { search, sort } = req.body;
 
     let filter = {};
 
     if (search) {
       filter.name = {
         $regex: search,
-        $options: "i",
+        $option: "i",
       };
     }
 
@@ -47,13 +40,6 @@ export const getStudents = async (req, res) => {
     }
 
     students = await students;
-
-    const accept = req.headers.accept || '';
-
-    // If HTML requested, render the index page
-    if (accept.includes('text/html')) {
-      return res.render('index', { students, search: search || '' });
-    }
 
     res.status(200).json({
       success: true,
@@ -85,44 +71,11 @@ export const getStudent = async (req, res) => {
       data:student
     })
 
-    // If HTML requested, render the view page
-    const accept = req.headers.accept || '';
-    if (accept.includes('text/html')) {
-      return res.render('view', { student });
-    }
-
 
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
-  }
-};
-
-// Render Add Student page
-export const renderAddStudent = (req, res) => {
-  return res.render('add');
-};
-
-// Render Edit Student page
-export const renderEditStudent = async (req, res) => {
-  try {
-    const student = await Students.findById(req.params.id);
-    if (!student) return res.redirect('/students');
-    return res.render('edit', { student });
-  } catch (error) {
-    return res.redirect('/students');
-  }
-};
-
-// Render View Student page (separate from API getStudent)
-export const renderViewStudent = async (req, res) => {
-  try {
-    const student = await Students.findById(req.params.id);
-    if (!student) return res.redirect('/students');
-    return res.render('view', { student });
-  } catch (error) {
-    return res.redirect('/students');
   }
 };
 
@@ -140,11 +93,6 @@ export const updateStudent = async (req, res) => {
       return res.status(404).json({
         message: "Student Not Found",
       });
-    }
-
-    const accept = req.headers.accept || '';
-    if (accept.includes('text/html') || req.is('application/x-www-form-urlencoded')) {
-      return res.redirect('/students');
     }
 
     res.json({
@@ -199,11 +147,6 @@ export const deleteStudent = async (req, res) => {
       return res.status(404).json({
         message: "Student Not Found",
       });
-    }
-
-    const accept = req.headers.accept || '';
-    if (accept.includes('text/html')) {
-      return res.redirect('/students');
     }
 
     res.json({

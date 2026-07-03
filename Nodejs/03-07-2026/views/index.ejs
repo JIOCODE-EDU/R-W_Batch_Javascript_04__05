@@ -3,16 +3,16 @@
   <%- include("partials/navbar.ejs") %>
 
     <h2>Student List</h2>
-    <form method="GET" action="/students">
+    <form>
       <div>
-        <input type="text" name="search" class="form-control" placeholder="Search Student" value="<%= search %>">
+        <input type="text" name="search" class="form-control" placeholder="Search Student" value="<% search %>">
       </div>
       <div>
-        <select name="sort" id="">
-          <option value="name">Name A - Z</option>
-          <option value="-name">Name Z - A</option>
-          <option value="age">Age Low-High</option>
-          <option value="-age">Age High-Low</option>
+        <select name="" id="">
+          <option value="">Name A - Z</option>
+          <option value="">Name Z - A</option>
+          <option value="">Age Low-High</option>
+          <option value="">Age High-Low</option>
         </select>
       </div>
       <div>
@@ -41,9 +41,9 @@
               <%= student.age %>
             </td>
             <td>
-              <a href="/students/view/<%= student._id %>">view</a>
-              <a href="/students/edit/<%= student._id %>">Edit</a>
-              <a href="/students/delete/<%= student._id %>">Delete</a>
+              <a href="/students/view/<%= student.id %>">view</a>
+              <a href="/students/edit/<%= student.id %>">Edit</a>
+              <a href="/students/delete/<% student.id %>">Delete</a>
             </td>
           </tr>
           <% }) %>
