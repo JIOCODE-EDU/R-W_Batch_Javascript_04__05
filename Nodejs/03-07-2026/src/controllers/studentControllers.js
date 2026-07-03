@@ -1,10 +1,18 @@
-import Students from "../models/StudentModel.js";.
+import Students from "../models/StudentModel.js";
 
 // new student create
 
 export const createStudent = async (req, res) => {
   try {
     const student = await Students.create(req.body);
+
+    const accept = req.headers.accept || "";
+    if (
+      accept.includes("text/html") ||
+      req.is("application/x-www-from-urlencoded")
+    ) {
+      return res.redirect("/students");
+    }
 
     res.status(201).json({
       success: true,
@@ -22,14 +30,14 @@ export const createStudent = async (req, res) => {
 
 export const getStudents = async (req, res) => {
   try {
-    const { search, sort } = req.body;
+    const { search, sort } = req.query;
 
     let filter = {};
 
     if (search) {
       filter.name = {
         $regex: search,
-        $option: "i",
+        $options: "i",
       };
     }
 
@@ -40,6 +48,14 @@ export const getStudents = async (req, res) => {
     }
 
     students = await students;
+
+    const accept = req.headers.accept || "";
+    if (
+      accept.includes("text/html") ||
+      req.is("application/x-www-from-urlencoded")
+    ) {
+      return res.render("index", { students, search: search || "" });
+    }
 
     res.status(200).json({
       success: true,
@@ -53,11 +69,10 @@ export const getStudents = async (req, res) => {
   }
 };
 
-// single student 
+// single student
 
 export const getStudent = async (req, res) => {
   try {
-
     const student = await Students.findById(req.params.id);
 
     if (!student) {
@@ -66,12 +81,18 @@ export const getStudent = async (req, res) => {
       });
     }
 
+    const accept = req.headers.accept || "";
+    if (
+      accept.includes("text/html") ||
+      req.is("application/x-www-from-urlencoded")
+    ) {
+      return res.render("view", { student });
+    }
+
     res.status(200).json({
-      success:true,
-      data:student
-    })
-
-
+      success: true,
+      data: student,
+    });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -83,8 +104,7 @@ export const getStudent = async (req, res) => {
 
 export const updateStudent = async (req, res) => {
   try {
-
-    const student = await Students.findByIdAndUpdate(req.params.id , req.body, {
+    const student = await Students.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -93,6 +113,14 @@ export const updateStudent = async (req, res) => {
       return res.status(404).json({
         message: "Student Not Found",
       });
+    }
+
+    const accept = req.headers.accept || "";
+    if (
+      accept.includes("text/html") ||
+      req.is("application/x-www-from-urlencoded")
+    ) {
+      return res.redirect('/students')
     }
 
     res.json({
@@ -140,13 +168,20 @@ export const updateStudentQuery = async (req, res) => {
 
 export const deleteStudent = async (req, res) => {
   try {
-
     const student = await Students.findByIdAndDelete(req.params.id);
 
     if (!student) {
       return res.status(404).json({
         message: "Student Not Found",
       });
+    }
+
+        const accept = req.headers.accept || "";
+    if (
+      accept.includes("text/html") ||
+      req.is("application/x-www-from-urlencoded")
+    ) {
+      return res.redirect('/students')
     }
 
     res.json({
@@ -159,7 +194,6 @@ export const deleteStudent = async (req, res) => {
     });
   }
 };
-
 
 // Student Delete via Query
 
