@@ -1,0 +1,23 @@
+<%- include("partials/header.ejs") %>
+
+  <%- include("partials/navbar.ejs") %>
+
+  <h2>Edit Student</h2>
+
+  <form action="/students/update/<%= student._id %>" method="POST">
+    <div>
+      <label for="">Name</label>
+      <input type="text" name="name" class="form-control" value="<%= student.name %>">
+    </div>
+     <div>
+      <label for="">Email</label>
+      <input type="email" name="email" class="form-control" value="<%= student.email %>">
+    </div>
+     <div>
+      <label for="">Age</label>
+      <input type="number" name="age" class="form-control" value="<%= student.age %>">
+    </div>
+    <button class="btn btn-success">Edit Student</button>
+  </form>
+
+  <%- include("partials/footer.ejs") %>
