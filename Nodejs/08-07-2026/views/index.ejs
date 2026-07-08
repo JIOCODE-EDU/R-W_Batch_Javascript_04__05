@@ -1,0 +1,53 @@
+<%- include("partials/header.ejs") %>
+
+  <%- include("partials/navbar.ejs") %>
+
+    <h2>Student List</h2>
+    <form>
+      <div>
+        <input type="text" name="search" class="form-control" placeholder="Search Student" value="<% search %>">
+      </div>
+      <div>
+        <select name="" id="">
+          <option value="">Name A - Z</option>
+          <option value="">Name Z - A</option>
+          <option value="">Age Low-High</option>
+          <option value="">Age High-Low</option>
+        </select>
+      </div>
+      <div>
+        <button class="btn btn-primary">Search</button>
+      </div>
+    </form>
+
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% students.forEach(student=> { %>
+          <tr>
+            <td>
+              <%= student.name %>
+            </td>
+            <td>
+              <%= student.email %>
+            </td>
+            <td>
+              <%= student.age %>
+            </td>
+            <td>
+              <a href="/students/view/<%= student.id %>">view</a>
+              <a href="/students/edit/<%= student.id %>">Edit</a>
+              <a href="/students/delete/<% student.id %>">Delete</a>
+            </td>
+          </tr>
+          <% }) %>
+      </tbody>
+    </table>
+
+    <%- include("partials/footer.ejs") %>
