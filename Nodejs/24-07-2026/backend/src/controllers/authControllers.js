@@ -1,18 +1,19 @@
-import userModel from "../../models/User.js";
+import User from "../../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 
 export const register = async (req, res) => {
+
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    res.status(400).json(errors.array());
+    return res.status(400).json({errors:errors.array()});
   }
 
   const { name, email, password } = req.body;
 
-  const exist = await userModel.findOne({ email });
+  const exist = await User.findOne({ email });
 
   if (exist) {
     return res.status(400).json({ message: "Email Already Exists." });
@@ -20,7 +21,7 @@ export const register = async (req, res) => {
 
   const hash = await bcrypt.hash(password, 10);
 
-  const user = await userModel.create({
+  const user = await User.create({
     name,
     email,
     password: hash,
@@ -33,10 +34,11 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    res.status(400).json(errors.array());
+    return res.status(400).json({errors:errors.array()});
   }
 
   const { email, password } = req.body;
@@ -68,10 +70,14 @@ export const login = async (req, res) => {
     },
   );
 
-  res.json({
-    success:true,
-    token
+  res.cookie("token" , token , {
+    httpOnly:true,
+    secure:process.env.NODE_COOKIES === "production",
+    sameSite:"strict",
+    maxAge:24 * 60 * 60 * 1000
   })
+
+  return res.redirect("/dashboard")
 };
 
 export const dashboard = async(req , res) => {
@@ -80,6 +86,22 @@ export const dashboard = async(req , res) => {
     success:true,
     user
   })
+}
+
+export const dashboardPage = async(req , res) => {
+
+  const user = await User.findById(req.user.id).select("_password")
+
+  if(!user){
+    return res.redirect("/login")
+  }
+
+  res.render("dashboard" , {user})
+}
+
+export const logout = (req , res) => {
+  res.clearCookies("token");
+  res.redirect("/")
 }
 
 

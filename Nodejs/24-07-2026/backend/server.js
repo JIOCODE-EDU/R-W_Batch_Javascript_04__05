@@ -6,6 +6,9 @@ import router from "./src/routes/authRoutes.js";
 import cors from 'cors'
 import { fileURLToPath } from "url";
 import path from 'path'
+import { dashboardPage } from "./src/controllers/authControllers.js";
+import cookieParser from "cookie-parser";
+import { auth } from "./src/middleware/authMiddleware.js";
 
 dotenv.config({path:"./.env"})
 dns.setServers(["8.8.8.8" , "8.8.4.4"])
@@ -21,6 +24,7 @@ app.use(express.urlencoded({extended:true}))
 app.set("view engine" , "ejs")
 app.set("views" , path.join(__dirname , "views"))
 app.use(express.static(path.join(__dirname , "public")))
+app.use(cookieParser())
 
 app.get("/" , (req , res) => {
   res.render("home")
@@ -31,10 +35,12 @@ app.get("/login" , (req , res) => {
 app.get("/register" , (req , res) => {
   res.render("register")
 })
+app.get("/dashboard" , auth , dashboardPage)
 
 app.use("/auth" , router)
 
+connectDB()
+
 app.listen(port , () => {
-  connectDB()
   console.log(`http://localhost:${port}`);
 })
