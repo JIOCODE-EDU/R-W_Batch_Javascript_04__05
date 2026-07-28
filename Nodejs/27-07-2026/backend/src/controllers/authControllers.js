@@ -1,4 +1,4 @@
-import User from "../../models/User.js";
+import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
@@ -21,16 +21,13 @@ export const register = async (req, res) => {
 
   const hash = await bcrypt.hash(password, 10);
 
-  const user = await User.create({
+  await User.create({
     name,
     email,
     password: hash,
   });
 
-  res.status(201).json({
-    success: true,
-    user,
-  });
+  return res.redirect("/login");
 };
 
 export const login = async (req, res) => {
@@ -100,7 +97,7 @@ export const dashboardPage = async(req , res) => {
 }
 
 export const logout = (req , res) => {
-  res.clearCookie("token");
+  res.clearCookies("token");
   res.redirect("/")
 }
 
