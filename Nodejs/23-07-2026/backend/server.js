@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 import dns from 'dns'
 import router from "./src/routes/authRoutes.js";
 import cors from 'cors'
-import cookieParser from 'cookie-parser'
 import { auth } from './src/middleware/authMiddleware.js'
 import { dashboardPage } from './src/controllers/authControllers.js'
 import { fileURLToPath } from "url";
@@ -21,7 +20,7 @@ const __dirname = path.dirname(__filename)
 app.use(express.json())
 app.use(cors())
 app.use(express.urlencoded({extended:true}))
-app.use(cookieParser())
+// app.use(cookieParser())
 app.set("view engine" , "ejs")
 app.set("views" , path.join(__dirname , "views"))
 app.use(express.static(path.join(__dirname , "public")))
